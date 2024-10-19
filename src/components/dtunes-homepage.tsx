@@ -9,34 +9,19 @@ import {
   Col,
   Image,
   ConfigProvider,
+  message,
+  Upload,
+  UploadProps,
 } from "antd";
 import { UploadOutlined, PlayCircleOutlined } from "@ant-design/icons";
 // import ReactAudioPlayer from "react-audio-player";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
-import { walrusStore, walrusRead } from "@/lib/walrus";
+import { walrusStore, walrusRead, publisher } from "@/lib/walrus";
+import { cardData, tracks } from "./songConstants";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
-
-const tracks = [
-  {
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-    title: "Madza - Chords of Life",
-    tags: ["house"],
-  },
-  {
-    url: "https://audioplayer.madza.dev/Madza-Late_Night_Drive.mp3",
-    title: "Madza - Late Night Drive",
-    tags: ["dnb"],
-  },
-  {
-    url: "https://audioplayer.madza.dev/Madza-Persistence.mp3",
-    title: "Madza - Persistence",
-    tags: ["dubstep"],
-  },
-];
 
 const colors = {
   tagsBackground: "#1890ff",
@@ -62,73 +47,6 @@ const colors = {
   playlistTextHoverActive: "#ffffff",
 };
 
-const cardData = [
-  {
-    id: 1,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 1",
-    description: "Artist 1",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 2,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 2",
-    description: "Artist 2",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 3,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 3",
-    description: "Artist 3",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 4,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 4",
-    description: "Artist 4",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 5,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 5",
-    description: "Artist 5",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 6,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 6",
-    description: "Artist 6",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 7,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 7",
-    description: "Artist 7",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-  {
-    id: 8,
-    image: "/cashewKing.png?height=300&width=300",
-    title: "Song 8",
-    description: "Artist 8",
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-  },
-];
-
 const theme = {
   token: {
     colorPrimary: "#1890ff", // Changed to blue
@@ -147,6 +65,7 @@ const uploadEventListener = async (e) => {
 };
 
 export function DtunesHomepage() {
+  const [walrusSongs, setWalrusSongs] = useState(cardData);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [audioSource, setAudioSource] = useState<string>(
     "path/to/your/audio/file.mp3"
@@ -155,6 +74,37 @@ export function DtunesHomepage() {
   const handleCardClick = (cardId: number, source: string) => {
     setSelectedCardId(cardId);
     setAudioSource(source);
+  };
+
+  const uploadProps: UploadProps = {
+    name: "file",
+    action: `${publisher}/v1/store?epochs=5`,
+    method: "PUT",
+    multiple: false,
+    maxCount: 1,
+    beforeUpload: (file) => {
+      const isMP3orMP4 =
+        file.type === "audio/mpeg" || file.type === "audio/mp4";
+      if (!isMP3orMP4) {
+        message.error(`${file.name} is not a mp3 or mp4 file`);
+      }
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      if (!isLt10M) {
+        message.error("Song must be smaller than 10MB!");
+      }
+      return isMP3orMP4 && isLt10M;
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} song uploaded successfully`);
+        console.log("info", info);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} song upload failed.`);
+      }
+    },
   };
 
   return (
@@ -179,7 +129,6 @@ export function DtunesHomepage() {
         >
           dtunes.xyz
         </Title>
-
         <div
           style={{
             display: "flex",
@@ -188,23 +137,9 @@ export function DtunesHomepage() {
             marginBottom: "3rem",
           }}
         >
-          <Button
-            type="primary"
-            icon={<UploadOutlined />}
-            size="large"
-            onClick={uploadEventListener}
-            style={{
-              height: "60px",
-              fontSize: "1.5rem",
-              padding: "0 40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            Upload
-          </Button>
+          <Upload {...uploadProps}>
+            <Button icon={<UploadOutlined />}>Upload to Walrus</Button>
+          </Upload>
           <Text
             style={{
               fontSize: "1.5rem",
@@ -218,27 +153,17 @@ export function DtunesHomepage() {
           <div style={{ width: "70%", maxHeight: "200px" }}>
             {" "}
             <Player
-              trackList={cardData}
+              trackList={walrusSongs}
               customColorScheme={colors}
               includeTags={false}
               includeSearch={false}
               showPlaylist={false}
             />
           </div>
-          {/* <ReactAudioPlayer
-            src={audioSource}
-            controls
-            style={{
-              width: "40%",
-              marginTop: "1rem",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          /> */}
         </div>
 
         <Row gutter={[16, 16]}>
-          {cardData.map((card) => (
+          {walrusSongs.map((card) => (
             <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
               <Card
                 hoverable

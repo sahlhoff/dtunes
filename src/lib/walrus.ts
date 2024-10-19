@@ -1,5 +1,5 @@
-const publisher = "https://publisher.walrus-testnet.walrus.space";
-const aggregator = "https://aggregator.walrus-testnet.walrus.space";
+export const publisher = "https://publisher.walrus-testnet.walrus.space";
+export const aggregator = "https://aggregator.walrus-testnet.walrus.space";
 
 export const walrusStore = async (formData: any) => {
   return fetch(`${publisher}/v1/store?epochs=5`, {
