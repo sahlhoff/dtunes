@@ -3,7 +3,13 @@
 import { About } from "@/components/about";
 import { Layout } from "antd";
 import "../app/globals.css";
+import { HeaderComponent } from "@/components/header";
 
 export default function AboutPage() {
-  return <About />;
+  return (
+    <>
+      <HeaderComponent />
+      <About />
+    </>
+  );
 }
