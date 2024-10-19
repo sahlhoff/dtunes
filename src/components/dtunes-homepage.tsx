@@ -234,7 +234,7 @@ export function DtunesHomepage() {
             <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
               <Card
                 hoverable
-                onClick={() => handleCardClick(card.id, card.source)}
+                onClick={() => handleCardClick(card.id, card.url)}
                 style={{
                   width: "100%",
                   backgroundColor: "#181818",
