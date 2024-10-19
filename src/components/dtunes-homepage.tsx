@@ -58,12 +58,6 @@ const theme = {
   },
 };
 
-const uploadEventListener = async (e) => {
-  const storeResult = await walrusStore({ formData: "hi" });
-  console.log(storeResult);
-  // fetch walrus
-};
-
 export function DtunesHomepage() {
   const [walrusSongs, setWalrusSongs] = useState(cardData);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
@@ -115,7 +109,6 @@ export function DtunesHomepage() {
           padding: "2rem",
           maxWidth: "1200px",
           margin: "0 auto",
-          backgroundColor: "#121212",
           minHeight: "100vh",
         }}
       >
