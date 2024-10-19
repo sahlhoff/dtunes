@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Button,
@@ -19,51 +19,59 @@ const { Meta } = Card;
 const cardData = [
   {
     id: 1,
-    image: "./cashewKing.png",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 1",
     description: "Artist 1",
+    source: "/music.mp3",
   },
   {
     id: 2,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 2",
     description: "Artist 2",
+    source: "/music.mp3",
   },
   {
     id: 3,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 3",
     description: "Artist 3",
+    source: "/music.mp3",
   },
   {
     id: 4,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 4",
     description: "Artist 4",
+    source: "/music.mp3",
   },
   {
     id: 5,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 5",
     description: "Artist 5",
+    source: "/music.mp3",
   },
   {
     id: 6,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 6",
     description: "Artist 6",
+    source: "/music.mp3",
   },
   {
     id: 7,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 7",
     description: "Artist 7",
+    source: "/music.mp3",
   },
   {
     id: 8,
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/cashewKing.png?height=300&width=300",
     title: "Song 8",
     description: "Artist 8",
+    source: "/music.mp3",
   },
 ];
 
@@ -79,10 +87,21 @@ const theme = {
 };
 
 export function DtunesHomepage() {
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [audioSource, setAudioSource] = useState<string>(
+    "path/to/your/audio/file.mp3"
+  );
+
+  const handleCardClick = (cardId: number, source: string) => {
+    setSelectedCardId(cardId);
+    setAudioSource(source);
+  };
+
   return (
     <ConfigProvider theme={theme}>
       <div
         style={{
+          width: "100%",
           padding: "2rem",
           maxWidth: "1200px",
           margin: "0 auto",
@@ -129,9 +148,14 @@ export function DtunesHomepage() {
             Have a listen...
           </Text>
           <ReactAudioPlayer
-            src="path/to/your/audio/file.mp3"
+            src={audioSource}
             controls
-            style={{ width: "100%", marginTop: "1rem" }}
+            style={{
+              width: "40%",
+              marginTop: "1rem",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
           />
         </div>
 
@@ -140,14 +164,21 @@ export function DtunesHomepage() {
             <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
               <Card
                 hoverable
-                style={{ width: "100%", backgroundColor: "#181818" }}
+                onClick={() => handleCardClick(card.id, card.source)}
+                style={{
+                  width: "100%",
+                  backgroundColor: "#181818",
+                  transform:
+                    selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
+                  transition: "transform 0.3s",
+                  zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
+                  position: "relative", // Ensure zIndex works
+                }}
                 cover={
                   <Image
                     alt={card.title}
-                    src={"/cashewKing.png"}
-                    preview={{
-                      mask: <PlayCircleOutlined style={{ fontSize: "2rem" }} />,
-                    }}
+                    src={card.image}
+                    preview={false} // Disable image preview
                   />
                 }
               >
