@@ -18,7 +18,7 @@ const { Meta } = Card;
 const cardData = [
   {
     id: 1,
-    image: "cashewKing.png",
+    image: "./cashewKing.png",
     title: "Song 1",
     description: "Artist 1",
   },
@@ -138,7 +138,7 @@ export function DtunesHomepage() {
                 cover={
                   <Image
                     alt={card.title}
-                    src={card.image}
+                    src={"/cashewKing.png"}
                     preview={{
                       mask: <PlayCircleOutlined style={{ fontSize: "2rem" }} />,
                     }}
