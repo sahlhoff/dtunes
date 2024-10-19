@@ -19,6 +19,7 @@ import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
 import { walrusStore, walrusRead, publisher } from "@/lib/walrus";
 import { cardData, tracks } from "./songConstants";
+import GeoPattern from "geopattern";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -173,8 +174,8 @@ export function DtunesHomepage() {
                 cover={
                   <Image
                     alt={card.title}
-                    src={card.image}
-                    preview={false} // Disable image preview
+                    src={GeoPattern.generate(card.title).toDataUri()}
+                    style={{ height: "300px", width: "300px" }}
                   />
                 }
               >
