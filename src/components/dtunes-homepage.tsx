@@ -11,10 +11,55 @@ import {
   ConfigProvider,
 } from "antd";
 import { UploadOutlined, PlayCircleOutlined } from "@ant-design/icons";
-import ReactAudioPlayer from "react-audio-player";
+// import ReactAudioPlayer from "react-audio-player";
+import Player from "@madzadev/audio-player";
+import "@madzadev/audio-player/dist/index.css";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
+
+const tracks = [
+  {
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
+    title: "Madza - Chords of Life",
+    tags: ["house"],
+  },
+  {
+    url: "https://audioplayer.madza.dev/Madza-Late_Night_Drive.mp3",
+    title: "Madza - Late Night Drive",
+    tags: ["dnb"],
+  },
+  {
+    url: "https://audioplayer.madza.dev/Madza-Persistence.mp3",
+    title: "Madza - Persistence",
+    tags: ["dubstep"],
+  },
+];
+
+const colors = {
+  tagsBackground: "#1890ff",
+  tagsText: "#ffffff",
+  tagsBackgroundHoverActive: "#6e65f1",
+  tagsTextHoverActive: "#ffffff",
+  searchBackground: "#18191f",
+  searchText: "#ffffff",
+  searchPlaceHolder: "#575a77",
+  playerBackground: "#18191f",
+  titleColor: "#ffffff",
+  timeColor: "#ffffff",
+  progressSlider: "#1890ff",
+  progressUsed: "#ffffff",
+  progressLeft: "#151616",
+  bufferLoaded: "#1f212b",
+  volumeSlider: "#1890ff",
+  volumeUsed: "#ffffff",
+  volumeLeft: "#151616",
+  playlistBackground: "#18191f",
+  playlistText: "#575a77",
+  playlistBackgroundHoverActive: "#18191f",
+  playlistTextHoverActive: "#ffffff",
+};
 
 const cardData = [
   {
@@ -22,56 +67,64 @@ const cardData = [
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 1",
     description: "Artist 1",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 2,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 2",
     description: "Artist 2",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 3,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 3",
     description: "Artist 3",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 4,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 4",
     description: "Artist 4",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 5,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 5",
     description: "Artist 5",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 6,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 6",
     description: "Artist 6",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 7,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 7",
     description: "Artist 7",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
   {
     id: 8,
     image: "/cashewKing.png?height=300&width=300",
     title: "Song 8",
     description: "Artist 8",
-    source: "/music.mp3",
+    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
+    tags: ["house"],
   },
 ];
 
@@ -144,10 +197,27 @@ export function DtunesHomepage() {
           >
             Upload
           </Button>
-          <Text style={{ fontSize: "1.5rem", color: "#F5F5F5" }}>
+          <Text
+            style={{
+              fontSize: "1.5rem",
+              color: "#F5F5F5",
+              marginBottom: "3rem",
+            }}
+          >
             Have a listen...
           </Text>
-          <ReactAudioPlayer
+
+          <div style={{ width: "70%", maxHeight: "200px" }}>
+            {" "}
+            <Player
+              trackList={cardData}
+              customColorScheme={colors}
+              includeTags={false}
+              includeSearch={false}
+              showPlaylist={false}
+            />
+          </div>
+          {/* <ReactAudioPlayer
             src={audioSource}
             controls
             style={{
@@ -156,7 +226,7 @@ export function DtunesHomepage() {
               marginLeft: "auto",
               marginRight: "auto",
             }}
-          />
+          /> */}
         </div>
 
         <Row gutter={[16, 16]}>
