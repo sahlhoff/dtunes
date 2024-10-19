@@ -11,6 +11,7 @@ import {
   ConfigProvider,
 } from "antd";
 import { UploadOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import ReactAudioPlayer from "react-audio-player";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -127,6 +128,11 @@ export function DtunesHomepage() {
           <Text style={{ fontSize: "1.5rem", color: "#F5F5F5" }}>
             Have a listen...
           </Text>
+          <ReactAudioPlayer
+            src="path/to/your/audio/file.mp3"
+            controls
+            style={{ width: "100%", marginTop: "1rem" }}
+          />
         </div>
 
         <Row gutter={[16, 16]}>
