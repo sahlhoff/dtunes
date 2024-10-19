@@ -1,6 +1,7 @@
 export const publisher = "https://publisher.walrus-testnet.walrus.space";
 export const aggregator = "https://aggregator.walrus-testnet.walrus.space";
 
+// @ts-ignore
 export const walrusStore = async (formData: any) => {
   return fetch(`${publisher}/v1/store?epochs=5`, {
     method: "put",

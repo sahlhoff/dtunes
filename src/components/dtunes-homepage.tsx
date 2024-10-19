@@ -13,12 +13,12 @@ import {
   Upload,
   UploadProps,
 } from "antd";
-import { UploadOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 // import ReactAudioPlayer from "react-audio-player";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
-import { walrusStore, walrusRead, publisher } from "@/lib/walrus";
-import { cardData, tracks } from "./songConstants";
+import { publisher } from "@/lib/walrus";
+import { cardData } from "./songConstants";
 import GeoPattern from "geopattern";
 
 const { Title, Text } = Typography;
@@ -60,11 +60,9 @@ const theme = {
 };
 
 export function DtunesHomepage() {
-  const [walrusSongs, setWalrusSongs] = useState(cardData);
+  const [walrusSongs] = useState(cardData);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
-  const [audioSource, setAudioSource] = useState<string>(
-    "path/to/your/audio/file.mp3"
-  );
+  const [, setAudioSource] = useState<string>("path/to/your/audio/file.mp3");
 
   const handleCardClick = (cardId: number, source: string) => {
     setSelectedCardId(cardId);

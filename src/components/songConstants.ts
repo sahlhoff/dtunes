@@ -70,7 +70,6 @@ export const tracks = [
     url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
     tags: ["house"],
     title: "Madza - Chords of Life",
-    tags: ["house"],
   },
   {
     url: "https://audioplayer.madza.dev/Madza-Late_Night_Drive.mp3",

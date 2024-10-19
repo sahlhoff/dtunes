@@ -46,7 +46,7 @@ export function About() {
           <Paragraph
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
-            Founded in 2023, dtunes.xyz was born out of a passion for music and
+            Founded in 2024, dtunes.xyz was born out of a passion for music and
             a desire to create a more inclusive and diverse music ecosystem. We
             believe that every artist deserves a chance to be heard, and every
             listener deserves access to a wide range of high-quality music.
@@ -55,26 +55,26 @@ export function About() {
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
             Our platform offers a seamless experience for uploading, streaming,
-            and discovering music. Whether you're an artist looking to share
+            and discovering music. Whether you are an artist looking to share
             your creations or a music lover searching for your next favorite
             track, dtunes.xyz has something for everyone.
           </Paragraph>
           <Paragraph
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
-            We're committed to providing a user-friendly interface that makes it
-            easy to navigate through our vast library of music. Our advanced
+            We are committed to providing a user-friendly interface that makes
+            it easy to navigate through our vast library of music. Our advanced
             algorithms help you discover new artists and tracks based on your
-            listening habits, ensuring that you're always finding fresh and
+            listening habits, ensuring that you are always finding fresh and
             exciting content.
           </Paragraph>
           <Paragraph
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
-            At dtunes.xyz, we also prioritize fair compensation for artists.
-            We've implemented a transparent royalty system that ensures artists
+            At dtunes.xyz, we also prioritize fair compensation for artists. We
+            have implemented a transparent royalty system that ensures artists
             are fairly rewarded for their work. By supporting artists directly
-            through our platform, you're helping to sustain a vibrant and
+            through our platform, you are helping to sustain a vibrant and
             diverse music community.
           </Paragraph>
           <Paragraph
@@ -82,7 +82,7 @@ export function About() {
           >
             Join us on this musical journey and be part of a community that
             celebrates creativity, diversity, and the power of music to bring
-            people together. Whether you're here to listen, create, or both,
+            people together. Whether you are here to listen, create, or both,
             dtunes.xyz is your home for all things music.
           </Paragraph>
         </Content>
