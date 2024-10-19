@@ -19,25 +19,6 @@ import { walrusStore, walrusRead } from "@/lib/walrus";
 const { Title, Text } = Typography;
 const { Meta } = Card;
 
-const tracks = [
-  {
-    url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-    tags: ["house"],
-    title: "Madza - Chords of Life",
-    tags: ["house"],
-  },
-  {
-    url: "https://audioplayer.madza.dev/Madza-Late_Night_Drive.mp3",
-    title: "Madza - Late Night Drive",
-    tags: ["dnb"],
-  },
-  {
-    url: "https://audioplayer.madza.dev/Madza-Persistence.mp3",
-    title: "Madza - Persistence",
-    tags: ["dubstep"],
-  },
-];
-
 const colors = {
   tagsBackground: "#1890ff",
   tagsText: "#ffffff",
