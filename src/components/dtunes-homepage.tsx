@@ -14,6 +14,7 @@ import { UploadOutlined, PlayCircleOutlined } from "@ant-design/icons";
 // import ReactAudioPlayer from "react-audio-player";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
+import { walrusStore, walrusRead } from "@/lib/walrus";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -139,6 +140,12 @@ const theme = {
   },
 };
 
+const uploadEventListener = async (e) => {
+  const storeResult = await walrusStore({ formData: "hi" });
+  console.log(storeResult);
+  // fetch walrus
+};
+
 export function DtunesHomepage() {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [audioSource, setAudioSource] = useState<string>(
@@ -185,6 +192,7 @@ export function DtunesHomepage() {
             type="primary"
             icon={<UploadOutlined />}
             size="large"
+            onClick={uploadEventListener}
             style={{
               height: "60px",
               fontSize: "1.5rem",
