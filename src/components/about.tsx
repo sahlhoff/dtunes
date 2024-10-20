@@ -25,12 +25,16 @@ export function About() {
     <ConfigProvider theme={theme}>
       <Layout style={{ minHeight: "100vh", backgroundColor: "#121212" }}>
         <Content
-          style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}
+          style={{
+            padding: "2rem",
+            maxWidth: "800px",
+            margin: "0 auto",
+            textAlign: "center", // Center text and image
+          }}
         >
           <Title
             style={{
               fontSize: "3rem",
-              textAlign: "center",
               marginBottom: "2rem",
               color: "#F5F5F5",
             }}
@@ -56,16 +60,21 @@ export function About() {
           <Paragraph
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
-            So enjoy the magic that is great decentralized music brought to you
-            by creators, dtunes and our friends at the Walrus!
+            So enjoy the magic that is a great decentralized music brought to
+            you by creators, dtunes and our friends at the Walrus!
           </Paragraph>
 
-          {/* <Image
+          <Image
             alt={"walrus"}
-            src={"public/IAMTHEWALRUS.png"}
-            style={{ height: "300px", width: "300px" }}
+            src={"/IAMTHEWALRUS.png"} // Update the path as needed
+            style={{
+              height: "300px",
+              width: "300px",
+              display: "block",
+              margin: "0 auto",
+            }}
             preview={false}
-          /> */}
+          />
           <Paragraph
             style={{ fontSize: "1.1rem", color: "#F5F5F5", lineHeight: 1.6 }}
           >
