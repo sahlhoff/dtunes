@@ -21,8 +21,16 @@ export const walrusStore = async (formData: any) => {
 export const walrusRead = async (blobId: string) => {
   return fetch(`${aggregator}/v1/${blobId}`)
     .then((response) => {
-      console.log(response.json());
-      return response.json();
+      if (!response.ok)
+        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+
+      return response.arrayBuffer();
+    })
+    .then((buffer) => {
+      const mp3Blob = new Blob([buffer as BlobPart], { type: "audio/mp3" });
+      const bUrl = window.URL.createObjectURL(mp3Blob);
+
+      return bUrl;
     })
     .catch((error) => {
       console.log(error);

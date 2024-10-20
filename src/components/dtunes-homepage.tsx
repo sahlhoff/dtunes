@@ -17,7 +17,7 @@ import { UploadOutlined } from "@ant-design/icons";
 // import ReactAudioPlayer from "react-audio-player";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
-import { publisher } from "@/lib/walrus";
+import { publisher, walrusRead } from "@/lib/walrus";
 import { cardData } from "./songConstants";
 import GeoPattern from "geopattern";
 
@@ -59,14 +59,43 @@ const theme = {
   },
 };
 
+const uploadToPolygon = () => {};
+
 export function DtunesHomepage() {
-  const [walrusSongs] = useState(cardData);
+  const [walrusSongs, setWalrusSongs] = useState(cardData);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [, setAudioSource] = useState<string>("path/to/your/audio/file.mp3");
 
   const handleCardClick = (cardId: number, source: string) => {
     setSelectedCardId(cardId);
     setAudioSource(source);
+  };
+
+  const createNewSong = ({
+    bUrl,
+    blobId,
+  }: {
+    bUrl: string;
+    blobId: string;
+  }) => {
+    const newSong = {
+      id: blobId,
+      title: "undefined",
+      description: "null",
+      url: bUrl,
+      tags: [],
+    };
+
+    setWalrusSongs([newSong, ...walrusSongs]);
+  };
+
+  const readFromWalrus = async (blobId: string) => {
+    console.log("reading from blobId", blobId);
+    const bUrl: any = await walrusRead(blobId);
+
+    console.log("res", bUrl);
+
+    createNewSong({ bUrl, blobId });
   };
 
   const uploadProps: UploadProps = {
@@ -93,7 +122,8 @@ export function DtunesHomepage() {
       }
       if (info.file.status === "done") {
         message.success(`${info.file.name} song uploaded successfully`);
-        console.log("info", info);
+        const blobId = info.file.response.newlyCreated.blobObject.blobId;
+        readFromWalrus(blobId);
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} song upload failed.`);
       }
