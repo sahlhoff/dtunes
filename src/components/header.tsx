@@ -46,12 +46,12 @@ export function HeaderComponent() {
                   className="h-10 w-10"
                 />
               </Link>
-              <nav className="ml-8">
-                <ul className="flex space-x-4">
+              <nav className="ml-10">
+                <ul className="flex space-x-4 justify-center">
                   <li>
                     <Link
                       href="/"
-                      className={`px-3 py-2 rounded-md text-sm font-medium ${
+                      className={` justify-center px-3 py-2 rounded-md text-sm font-medium ${
                         pathname === "/"
                           ? "bg-gray-800 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -76,6 +76,20 @@ export function HeaderComponent() {
               </nav>
             </div>
             <ConnectButton
+              // auth={{
+              //   isLoggedIn: async (address) => {
+              //     console.log("checking if logged in!", { address });
+              //     return await isLoggedIn();
+              //   },
+              //   doLogin: async (params) => {
+              //     console.log("logging in!", params);
+              //   },
+              //   getLoginPayload: async ({ address }) =>
+              //     generatePayload({ address }),
+              //   doLogout: async () => {
+              //     console.log("logging out!");
+              //   },
+              // }}
               client={client}
               wallets={wallets}
               theme={darkTheme({

@@ -144,6 +144,7 @@ export function DtunesHomepage() {
     multiple: false,
     maxCount: 1,
     beforeUpload: (file) => {
+      console.log("Upload button engaged"); // Add this line to confirm engagement
       const isMP3orMP4 =
         file.type === "audio/mpeg" || file.type === "audio/mp4";
       if (!isMP3orMP4) {
@@ -154,10 +155,14 @@ export function DtunesHomepage() {
         message.error("Song must be smaller than 10MB!");
       }
 
+      console.log("File type check:", isMP3orMP4);
+      console.log("File size check:", isLt10M);
+
       setStatusMessage("🚀 Uploading song to Walrus  🚀");
       return isMP3orMP4 && isLt10M;
     },
     onChange(info) {
+      console.log("Upload status:", info.file.status);
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
@@ -166,7 +171,9 @@ export function DtunesHomepage() {
         const blobId = info.file.response.newlyCreated.blobObject.blobId;
         readFromWalrus(blobId, info.file.name);
       } else if (info.file.status === "error") {
-        message.error(`${info.file.name} song upload failed.`);
+        message.error(
+          `${info.file.name} song upload failed. It happens.. Try again!`
+        );
         setStatusMessage("🎵 Have a nice listen 🎵");
       }
     },
@@ -211,7 +218,7 @@ export function DtunesHomepage() {
             {statusMessage}
           </Text>
           <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />}>Upload to Walrus</Button>
+            <Button icon={<UploadOutlined />}>Upload an MP3 to Walrus</Button>
           </Upload>
 
           {walrusSongs && walrusSongs.length > 0 && (
