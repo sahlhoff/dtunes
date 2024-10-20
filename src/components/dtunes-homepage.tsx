@@ -67,6 +67,9 @@ export function DtunesHomepage() {
     null
   );
   const [, setAudioSource] = useState<string>("path/to/your/audio/file.mp3");
+  const [statusMessage, setStatusMessage] = useState(
+    "🎵 Have a nice listen 🎵"
+  );
 
   const handleCardClick = (cardId: number | string, source: string) => {
     setSelectedCardId(cardId);
@@ -89,13 +92,14 @@ export function DtunesHomepage() {
     };
 
     setWalrusSongs([newSong, ...walrusSongs]);
+    setStatusMessage("🎵 Have a nice listen 🎵");
   };
 
   const readFromWalrus = async (blobId: string) => {
+    setStatusMessage("🏗️ Downloading song from Walrus  🏗️");
+
     console.log("reading from blobId", blobId);
     const bUrl: any = await walrusRead(blobId);
-
-    console.log("res", bUrl);
 
     createNewSong({ bUrl, blobId });
   };
@@ -116,6 +120,8 @@ export function DtunesHomepage() {
       if (!isLt10M) {
         message.error("Song must be smaller than 10MB!");
       }
+
+      setStatusMessage("🚀 Uploading song to Walrus  🚀");
       return isMP3orMP4 && isLt10M;
     },
     onChange(info) {
@@ -128,6 +134,7 @@ export function DtunesHomepage() {
         readFromWalrus(blobId);
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} song upload failed.`);
+        setStatusMessage("🎵 Have a nice listen 🎵");
       }
     },
   };
@@ -147,7 +154,7 @@ export function DtunesHomepage() {
           style={{
             fontSize: "4rem",
             textAlign: "center",
-            marginBottom: "2rem",
+            marginBottom: ".5rem",
             color: "#F5F5F5",
           }}
         >
@@ -161,9 +168,6 @@ export function DtunesHomepage() {
             marginBottom: "3rem",
           }}
         >
-          <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />}>Upload to Walrus</Button>
-          </Upload>
           <Text
             style={{
               fontSize: "1.5rem",
@@ -171,11 +175,13 @@ export function DtunesHomepage() {
               marginBottom: "3rem",
             }}
           >
-            Have a listen...
+            {statusMessage}
           </Text>
+          <Upload {...uploadProps}>
+            <Button icon={<UploadOutlined />}>Upload to Walrus</Button>
+          </Upload>
 
-          <div style={{ width: "70%", maxHeight: "200px" }}>
-            {" "}
+          <div style={{ width: "70%", maxHeight: "200px", marginTop: "80px" }}>
             <Player
               trackList={walrusSongs}
               customColorScheme={colors}
