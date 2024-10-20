@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Button,
@@ -18,11 +18,12 @@ import { UploadOutlined } from "@ant-design/icons";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
 import { publisher, walrusRead } from "@/lib/walrus";
-import { cardData } from "./songConstants";
 import GeoPattern from "geopattern";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
+
+const backendURL = "https://dtunes-server.fly.dev";
 
 const colors = {
   tagsBackground: "#1890ff",
@@ -59,10 +60,36 @@ const theme = {
   },
 };
 
-const uploadToPolygon = () => {};
+const getSongs = async (setWalrusSongs) => {
+  const rawSongs = await fetch(`${backendURL}/list`).then((response) =>
+    response.json()
+  );
+
+  const promises = rawSongs.map(async (s) => {
+    const url = await walrusRead(s.id);
+    return { ...s, url };
+  });
+
+  const songs = await Promise.all(promises);
+
+  setWalrusSongs(songs);
+};
+
+const addSong = async (song: any, setWalrusSongs) => {
+  const newSongs = await fetch(`${backendURL}/add`, {
+    method: "POST",
+    body: JSON.stringify(song),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  setWalrusSongs(newSongs);
+  getSongs(setWalrusSongs);
+};
 
 export function DtunesHomepage() {
-  const [walrusSongs, setWalrusSongs] = useState(cardData);
+  const [walrusSongs, setWalrusSongs] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState<number | null | string>(
     null
   );
@@ -70,6 +97,10 @@ export function DtunesHomepage() {
   const [statusMessage, setStatusMessage] = useState(
     "🎵 Have a nice listen 🎵"
   );
+
+  useEffect(() => {
+    getSongs(setWalrusSongs);
+  }, []);
 
   const handleCardClick = (cardId: number | string, source: string) => {
     setSelectedCardId(cardId);
@@ -79,29 +110,31 @@ export function DtunesHomepage() {
   const createNewSong = ({
     bUrl,
     blobId,
+    filename,
   }: {
     bUrl: string;
     blobId: string;
+    filename: string;
   }) => {
     const newSong = {
       id: blobId,
-      title: "undefined",
-      description: "null",
-      url: bUrl,
+      title: filename,
+      description: "",
       tags: [],
     };
 
-    setWalrusSongs([newSong, ...walrusSongs]);
+    addSong(newSong, setWalrusSongs);
+
     setStatusMessage("🎵 Have a nice listen 🎵");
   };
 
-  const readFromWalrus = async (blobId: string) => {
+  const readFromWalrus = async (blobId: string, filename: string) => {
     setStatusMessage("🏗️ Downloading song from Walrus  🏗️");
 
     console.log("reading from blobId", blobId);
     const bUrl: any = await walrusRead(blobId);
 
-    createNewSong({ bUrl, blobId });
+    createNewSong({ bUrl, blobId, filename });
   };
 
   const uploadProps: UploadProps = {
@@ -131,7 +164,7 @@ export function DtunesHomepage() {
       if (info.file.status === "done") {
         message.success(`${info.file.name} song uploaded successfully`);
         const blobId = info.file.response.newlyCreated.blobObject.blobId;
-        readFromWalrus(blobId);
+        readFromWalrus(blobId, info.file.name);
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} song upload failed.`);
         setStatusMessage("🎵 Have a nice listen 🎵");
@@ -181,51 +214,61 @@ export function DtunesHomepage() {
             <Button icon={<UploadOutlined />}>Upload to Walrus</Button>
           </Upload>
 
-          <div style={{ width: "70%", maxHeight: "200px", marginTop: "80px" }}>
-            <Player
-              trackList={walrusSongs}
-              customColorScheme={colors}
-              includeTags={false}
-              includeSearch={false}
-              showPlaylist={false}
-            />
-          </div>
+          {walrusSongs && walrusSongs.length > 0 && (
+            <div
+              style={{ width: "70%", maxHeight: "200px", marginTop: "80px" }}
+            >
+              <Player
+                trackList={walrusSongs}
+                customColorScheme={colors}
+                includeTags={false}
+                includeSearch={false}
+                showPlaylist={false}
+              />
+            </div>
+          )}
         </div>
 
-        <Row gutter={[16, 16]}>
-          {walrusSongs.map((card) => (
-            <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
-              <Card
-                hoverable
-                onClick={() => handleCardClick(card.id, card.url)}
-                style={{
-                  width: "100%",
-                  backgroundColor: "#181818",
-                  transform:
-                    selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
-                  transition: "transform 0.3s",
-                  zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
-                  position: "relative", // Ensure zIndex works
-                }}
-                cover={
-                  <Image
-                    alt={card.title}
-                    src={GeoPattern.generate(card.title).toDataUri()}
-                    style={{ height: "300px", width: "300px" }}
-                    preview={false}
-                  />
-                }
-              >
-                <Meta
-                  title={<span style={{ color: "#F5F5F5" }}>{card.title}</span>}
-                  description={
-                    <span style={{ color: "#B3B3B3" }}>{card.description}</span>
+        {walrusSongs.length > 0 && (
+          <Row gutter={[16, 16]}>
+            {walrusSongs.map((card) => (
+              <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
+                <Card
+                  hoverable
+                  onClick={() => handleCardClick(card.id, card.url)}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#181818",
+                    transform:
+                      selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
+                    transition: "transform 0.3s",
+                    zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
+                    position: "relative", // Ensure zIndex works
+                  }}
+                  cover={
+                    <Image
+                      alt={card.title}
+                      src={GeoPattern.generate(card.title).toDataUri()}
+                      style={{ height: "300px", width: "300px" }}
+                      preview={false}
+                    />
                   }
-                />
-              </Card>
-            </Col>
-          ))}
-        </Row>
+                >
+                  <Meta
+                    title={
+                      <span style={{ color: "#F5F5F5" }}>{card.title}</span>
+                    }
+                    description={
+                      <span style={{ color: "#B3B3B3" }}>
+                        {card.description}
+                      </span>
+                    }
+                  />
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </div>
     </ConfigProvider>
   );
