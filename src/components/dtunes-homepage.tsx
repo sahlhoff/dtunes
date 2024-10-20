@@ -212,6 +212,7 @@ export function DtunesHomepage() {
                     alt={card.title}
                     src={GeoPattern.generate(card.title).toDataUri()}
                     style={{ height: "300px", width: "300px" }}
+                    preview={false}
                   />
                 }
               >
