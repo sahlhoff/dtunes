@@ -63,10 +63,12 @@ const uploadToPolygon = () => {};
 
 export function DtunesHomepage() {
   const [walrusSongs, setWalrusSongs] = useState(cardData);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [selectedCardId, setSelectedCardId] = useState<number | null | string>(
+    null
+  );
   const [, setAudioSource] = useState<string>("path/to/your/audio/file.mp3");
 
-  const handleCardClick = (cardId: number, source: string) => {
+  const handleCardClick = (cardId: number | string, source: string) => {
     setSelectedCardId(cardId);
     setAudioSource(source);
   };
