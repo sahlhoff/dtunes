@@ -12,6 +12,7 @@ import {
   message,
   Upload,
   UploadProps,
+  App,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 // import ReactAudioPlayer from "react-audio-player";
@@ -180,103 +181,105 @@ export function DtunesHomepage() {
   };
 
   return (
-    <ConfigProvider theme={theme}>
-      <div
-        style={{
-          width: "100%",
-          padding: "2rem",
-          maxWidth: "1200px",
-          margin: "0 auto",
-          minHeight: "100vh",
-        }}
-      >
-        <Title
-          style={{
-            fontSize: "4rem",
-            textAlign: "center",
-            marginBottom: ".5rem",
-            color: "#F5F5F5",
-          }}
-        >
-          dtunes.xyz
-        </Title>
+    <App>
+      <ConfigProvider theme={theme}>
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: "3rem",
+            width: "100%",
+            padding: "2rem",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            minHeight: "100vh",
           }}
         >
-          <Text
+          <Title
             style={{
-              fontSize: "1.5rem",
+              fontSize: "4rem",
+              textAlign: "center",
+              marginBottom: ".5rem",
               color: "#F5F5F5",
+            }}
+          >
+            dtunes.xyz
+          </Title>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
               marginBottom: "3rem",
             }}
           >
-            {statusMessage}
-          </Text>
-          <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />}>Upload an MP3 to Walrus</Button>
-          </Upload>
+            <Text
+              style={{
+                fontSize: "1.5rem",
+                color: "#F5F5F5",
+                marginBottom: "3rem",
+              }}
+            >
+              {statusMessage}
+            </Text>
+            <Upload {...uploadProps}>
+              <Button icon={<UploadOutlined />}>Upload an MP3 to Walrus</Button>
+            </Upload>
+
+            {walrusSongs && walrusSongs.length > 0 && (
+              <div
+                style={{ width: "70%", maxHeight: "200px", marginTop: "80px" }}
+              >
+                <Player
+                  trackList={walrusSongs}
+                  customColorScheme={colors}
+                  includeTags={false}
+                  includeSearch={false}
+                  showPlaylist={false}
+                />
+              </div>
+            )}
+          </div>
 
           {walrusSongs && walrusSongs.length > 0 && (
-            <div
-              style={{ width: "70%", maxHeight: "200px", marginTop: "80px" }}
-            >
-              <Player
-                trackList={walrusSongs}
-                customColorScheme={colors}
-                includeTags={false}
-                includeSearch={false}
-                showPlaylist={false}
-              />
-            </div>
+            <Row gutter={[16, 16]}>
+              {walrusSongs.map((card) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
+                  <Card
+                    hoverable
+                    onClick={() => handleCardClick(card.id, card.url)}
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#181818",
+                      transform:
+                        selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
+                      transition: "transform 0.3s",
+                      zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
+                      position: "relative", // Ensure zIndex works
+                    }}
+                    cover={
+                      <Image
+                        alt={card.title}
+                        src={GeoPattern.generate(card.title).toDataUri()}
+                        style={{ height: "300px", width: "300px" }}
+                        preview={false}
+                      />
+                    }
+                  >
+                    <Meta
+                      title={
+                        <span style={{ color: "#F5F5F5" }}>{card.title}</span>
+                      }
+                      description={
+                        <span style={{ color: "#B3B3B3" }}>
+                          {card.description}
+                        </span>
+                      }
+                    />
+                  </Card>
+                </Col>
+              ))}
+            </Row>
           )}
         </div>
-
-        {walrusSongs && walrusSongs.length > 0 && (
-          <Row gutter={[16, 16]}>
-            {walrusSongs.map((card) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
-                <Card
-                  hoverable
-                  onClick={() => handleCardClick(card.id, card.url)}
-                  style={{
-                    width: "100%",
-                    backgroundColor: "#181818",
-                    transform:
-                      selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
-                    transition: "transform 0.3s",
-                    zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
-                    position: "relative", // Ensure zIndex works
-                  }}
-                  cover={
-                    <Image
-                      alt={card.title}
-                      src={GeoPattern.generate(card.title).toDataUri()}
-                      style={{ height: "300px", width: "300px" }}
-                      preview={false}
-                    />
-                  }
-                >
-                  <Meta
-                    title={
-                      <span style={{ color: "#F5F5F5" }}>{card.title}</span>
-                    }
-                    description={
-                      <span style={{ color: "#B3B3B3" }}>
-                        {card.description}
-                      </span>
-                    }
-                  />
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        )}
-      </div>
-    </ConfigProvider>
+      </ConfigProvider>
+    </App>
   );
 }
