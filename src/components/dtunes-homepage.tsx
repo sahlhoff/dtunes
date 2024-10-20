@@ -220,7 +220,9 @@ export function DtunesHomepage() {
               {statusMessage}
             </Text>
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>Upload an MP3 to Walrus</Button>
+              <Button size="large" icon={<UploadOutlined />}>
+                Upload an MP3 to Walrus
+              </Button>
             </Upload>
 
             {walrusSongs && walrusSongs.length > 0 && (
