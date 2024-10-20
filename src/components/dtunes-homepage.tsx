@@ -22,7 +22,6 @@ import { publisher, walrusRead } from "@/lib/walrus";
 import GeoPattern from "geopattern";
 
 const { Title, Text } = Typography;
-const { Meta } = Card;
 
 const backendURL = "https://dtunes-server.fly.dev";
 
@@ -192,6 +191,7 @@ export function DtunesHomepage() {
             maxWidth: "1200px",
             margin: "0 auto",
             minHeight: "100vh",
+            marginBottom: "200px",
           }}
         >
           <Title
@@ -241,47 +241,6 @@ export function DtunesHomepage() {
               </div>
             )}
           </div>
-
-          {/* {walrusSongs && walrusSongs.length > 0 && (
-            <Row gutter={[16, 16]}>
-              {walrusSongs.map((card) => (
-                <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
-                  <Card
-                    hoverable
-                    onClick={() => handleCardClick(card.id, card.url)}
-                    style={{
-                      width: "100%",
-                      backgroundColor: "#181818",
-                      transform:
-                        selectedCardId === card.id ? "scale(1.1)" : "scale(1)",
-                      transition: "transform 0.3s",
-                      zIndex: selectedCardId === card.id ? 1 : 0, // Bring selected card to front
-                      position: "relative", // Ensure zIndex works
-                    }}
-                    cover={
-                      <Image
-                        alt={card.title}
-                        src={GeoPattern.generate(card.title).toDataUri()}
-                        style={{ height: "300px", width: "300px" }}
-                        preview={false}
-                      />
-                    }
-                  >
-                    <Meta
-                      title={
-                        <span style={{ color: "#F5F5F5" }}>{card.title}</span>
-                      }
-                      description={
-                        <span style={{ color: "#B3B3B3" }}>
-                          {card.description}
-                        </span>
-                      }
-                    />
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          )} */}
         </div>
       </ConfigProvider>
     </App>
