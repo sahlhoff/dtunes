@@ -94,7 +94,9 @@ export function DtunesHomepage() {
   const [selectedCardId, setSelectedCardId] = useState<number | null | string>(
     null
   );
-  const [, setAudioSource] = useState<string>("path/to/your/audio/file.mp3");
+  const [audioSource, setAudioSource] = useState<string>(
+    "path/to/your/audio/file.mp3"
+  );
   const [statusMessage, setStatusMessage] = useState(
     "🎵 Have a nice listen 🎵"
   );
@@ -234,13 +236,13 @@ export function DtunesHomepage() {
                   customColorScheme={colors}
                   includeTags={false}
                   includeSearch={false}
-                  showPlaylist={false}
+                  showPlaylist={true}
                 />
               </div>
             )}
           </div>
 
-          {walrusSongs && walrusSongs.length > 0 && (
+          {/* {walrusSongs && walrusSongs.length > 0 && (
             <Row gutter={[16, 16]}>
               {walrusSongs.map((card) => (
                 <Col xs={24} sm={12} md={8} lg={6} key={card.id}>
@@ -279,7 +281,7 @@ export function DtunesHomepage() {
                 </Col>
               ))}
             </Row>
-          )}
+          )} */}
         </div>
       </ConfigProvider>
     </App>
